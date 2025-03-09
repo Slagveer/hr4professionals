@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"needsReply\": {\n      \"type\": \"boolean\"\n      },\n    \"question\": {\n      \"type\": \"string\",\n      \"description\":\"The next question if the last question is not asked\"\n      },\n    \"lastQuestionAsked\": {\n      \"type\": \"boolean\",\n      \"description\":\"Is the related question the last question\"\n      },\n    \"notRelated\": {\n      \"type\": \"boolean\",\n      \"description\":\"If the input is not related to the proces\"\n      },\n    \"relatedQuestion\": {\n      \"type\": \"number\",\n      \"description\":\"The input is related to this question\"\n      }\n  },\n  \"required\": [\"needsReply\", \"question\", \"answer\"]\n}\n"
+        "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"needsReply\": {\n      \"type\": \"boolean\"\n      },\n    \"question\": {\n      \"type\": \"string\",\n      \"description\":\"The next question if the last question is not asked\"\n      },\n    \"lastQuestionAsked\": {\n      \"type\": \"boolean\",\n      \"description\":\"Is the related question equal to the last question\"\n      },\n    \"notRelated\": {\n      \"type\": \"boolean\",\n      \"description\":\"If the input is not related to the proces\"\n      },\n    \"relatedQuestion\": {\n      \"type\": \"number\",\n      \"description\":\"The input is related to this question\"\n      }\n  },\n  \"required\": [\"needsReply\", \"question\", \"answer\"]\n}\n"
       },
       "id": "2101854c-474b-4b4c-88e1-470f9fa1fc1e",
       "name": "JSON Parser",
@@ -127,7 +127,7 @@
         "messages": {
           "messageValues": [
             {
-              "message": "Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Je stelt gerichte vragen om hun geschiktheid en beschikbaarheid te beoordelen en biedt tegelijkertijd ondersteuning door hun vragen te beantwoorden. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten.\n\nVragen die gesteld moeten worden:\n1.\tVraag aan de kandidaat of de aanvraag hem/haar aanspreekt?\n2.\tVraag de kandidaat of hij/zij beschikbaar is voor die periode en de gewenste uren zoals ze in de aanvraag staan vermeld?\n3.\tVraag de kandidaat  of hij/zij voldoet aan de eisen en groot gedeelte van de wensen zoals ze in de aanvraag staan vermeld?\n4.\tVraag de kandidaat of hij/zij een motivatie kan opsturen?\n5.\tVraag de kandidaat of hij/zij een CV max A4 kan opsturen?\n\nDoelstellingen:\nBekijk de invoer vanuit de kandidaat en bepaal op welke vraag dit een antwoord kan zijn. Als dat niet bepaald kan worden en het niet relateerbaar is aan de vragen. Geef dan aan dat je alleen kan reageren op onderdelen zoals vermeld in de aanvraag.\nVerzamel de benodigde informatie van kandidaat door een telkens 1 vraag te stellen.\nStel na elk antwoord van de kandidaat de volgende vraag die na de beantwoorde vraag moet komen.\nAls er bijvoorbeeld antwoord gegeven is op vraag 1. Stel dan vraag 2. Als er antwoord gegeven is op vraag 4. Stel dan vraag 5.\nNadat vraag 5 beantwoord is moet je de kandidaat vertellen dat je contact zal opnemen.\nStuur een bedankbericht na het ontvangen van het antwoord op vraag 5.\nBepaal ook of de laatste vraag al gesteld is.\n\nBijvoorbeeld:\nJe hebt het volgende bericht ontvangen. Hi ik heb mijn CV verstuurd. Omdat dit antwoord bij vraag 5 hoort dus ook een gerelateerd aan vraag 5. Zijn alle vragen al beantwoord.  \nVerwerk het nummer van de vraag in elk bericht om de voortgang te volgen.\n\nAls de kandidaat geen CV of motivatiebrief kan aanleveren dan moet je een  bedankbericht sturen, zoals: Aangezien je geen CV kunt aanleveren, kunnen we helaas niet verder gaan met het sollicitatieproces\n\nCommunicatierichtlijnen:\nHoud de communicatie beknopt en in een zakelijke informele toon.\nBegin elk bericht met \"Hallo\" en eindig met \"Met vriendelijke Groeten, De recruiter.\"\nGebruik alleen platte tekst, zonder speciale opmaak.\nAntwoord altijd in dezelfde taal als de inkomende e-mail.\n\nAutonomie:\nWerk autonoom volgens je specialiteit."
+              "message": "Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Je stelt gerichte vragen om hun geschiktheid en beschikbaarheid te beoordelen en biedt tegelijkertijd ondersteuning door hun vragen te beantwoorden. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten.\n\nVragen die gesteld moeten worden:\n1.\tVraag aan de kandidaat of de aanvraag hem/haar aanspreekt?\n2.\tVraag de kandidaat of hij/zij beschikbaar is voor die periode en de gewenste uren zoals ze in de aanvraag staan vermeld?\n3.\tVraag de kandidaat  of hij/zij voldoet aan de eisen en groot gedeelte van de wensen zoals ze in de aanvraag staan vermeld?\n4.\tVraag de kandidaat of hij/zij een motivatie kan opsturen?\n5.\tVraag de kandidaat of hij/zij een CV max A4 kan opsturen?\n\nDoelstellingen:\nBekijk de invoer vanuit de kandidaat en bepaal op welke vraag dit een antwoord kan zijn. Als dat niet bepaald kan worden en het niet relateerbaar is aan de vragen. Geef dan aan dat je alleen kan reageren op onderdelen zoals vermeld in de aanvraag.\nVerzamel de benodigde informatie van kandidaat door een telkens 1 vraag te stellen.\nStel na elk antwoord van de kandidaat de volgende vraag die na de beantwoorde vraag moet komen.\nAls er bijvoorbeeld antwoord gegeven is op vraag 1. Stel dan vraag 2. Als er antwoord gegeven is op vraag 4. Stel dan vraag 5.\nNadat vraag 5 beantwoord is moet je de kandidaat vertellen dat je contact zal opnemen.\nStuur een bedankbericht na het ontvangen van het antwoord op vraag 5.\nBepaal ook of de laatste vraag al gesteld is.\nAls de gerelateerde vraag gelijk is 5 kan de volgende vraag niet gelijk zijn aan vraag 1,2,3,4 of 5.\n\nBijvoorbeeld:\nJe hebt het volgende bericht ontvangen. Hi ik heb mijn CV verstuurd. Omdat dit antwoord bij vraag 5 hoort dus ook een gerelateerd aan vraag 5. Zijn alle vragen al beantwoord.  \nVerwerk het nummer van de vraag in elk bericht om de voortgang te volgen.\n\nAls de kandidaat geen CV of motivatiebrief kan aanleveren dan moet je een  bedankbericht sturen, zoals: Aangezien je geen CV kunt aanleveren, kunnen we helaas niet verder gaan met het sollicitatieproces\n\nCommunicatierichtlijnen:\nHoud de communicatie beknopt en in een zakelijke informele toon.\nBegin elk bericht met \"Hallo\" en eindig met \"Met vriendelijke Groeten, De recruiter.\"\nGebruik alleen platte tekst, zonder speciale opmaak.\nAntwoord altijd in dezelfde taal als de inkomende e-mail.\n\nAutonomie:\nWerk autonoom volgens je specialiteit."
             }
           ]
         }
@@ -264,11 +264,11 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Subject: De Aanvraag\nTe stellen vraag is: {{ $json.question }}",
+        "text": "=Context:\nQuestion = {{ $json.question }}\nneedsReply = {{ $('Assess if message needs a reply').item.json.needsReply }}\nlastQuestionAsked = {{ $json.lastQuestionAsked }}\nnotRelated = {{ $json.notRelated }}\nrelatedQuestion = {{ $json.relatedQuestion }}",
         "messages": {
           "messageValues": [
             {
-              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. Stel de vraag aan de kandidaat als deze aanwezig is in de question parameter:  {{ $json.question }}. Als deze niet aanwezig is en de needsReply is \"true\" en de notRelated is \"false\", betekent het dat het proces afgerond is. Bedankt de kandidaat en geef aan dat je snel contact zal opnemen.\nAls het antwoord niet gerelateerd is aan de aanvraag op basis van de notRelated parameter die op true staat. Bedankt de kandidaat en geef aan dat je alleen kan reageren op zaken die betrekking hebben op een aanvraag.\nProbeer nooit een vraag te beanwoorden.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \nAls needsReply is true en de question is niet leeg en de relatedQuestion is ongelijk aan 5:\nStel de vraag aan de kandidaat als deze aanwezig is in de question parameter:  {{ $json.question }}. \n\nAls de relatedQuestion gelijk is aan 5 en de needsReply is \"true\" en de notRelated is \"false\":\nGeef aan dat het proces afgerond is. Bedankt de kandidaat en geef aan dat je snel contact zal opnemen.\n\nGebruik de context.\n\nAls notRelated gelijk aan true is:\nBedankt de kandidaat en geef aan dat je alleen kan reageren op zaken die betrekking hebben op een aanvraag.\nProbeer nooit zelf een vraag te beanwoorden.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
             }
           ]
         }
@@ -328,7 +328,7 @@
             },
             {
               "id": "65e12be4-9623-4ef5-bedf-e98aa56cc37c",
-              "leftValue": "={{ $json.lastQuestionAsked && $json.relatedQuestion === 5 }}",
+              "leftValue": "={{ $json.lastQuestionAsked || $json.relatedQuestion === 5 }}",
               "rightValue": "",
               "operator": {
                 "type": "boolean",
@@ -460,9 +460,9 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {},
-  "versionId": "1034010e-9791-4ff9-a007-a18a6b6cda13",
+  "versionId": "3916f901-027f-462c-a06a-dea3846f08d3",
   "meta": {
     "templateId": "2271",
     "templateCredsSetupCompleted": true,
