@@ -1,15 +1,15 @@
 {
-  "name": "Telegram AI Recruiter Auto-Responder: Create Draft Replies to incoming emails",
+  "name": "Telegram AI Recruiter Auto-Responder: Create Draft Replies to incoming telegram messages",
   "nodes": [
     {
       "parameters": {
-        "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"needsReply\": {\n      \"type\": \"boolean\"\n      },\n    \"question\": {\n      \"type\": \"string\",\n      \"description\":\"The next question if the last question is not asked\"\n      },\n    \"lastQuestionAsked\": {\n      \"type\": \"boolean\",\n      \"description\":\"Is the related question equal to the last question\"\n      },\n    \"notRelated\": {\n      \"type\": \"boolean\",\n      \"description\":\"If the input is not related to the proces\"\n      },\n    \"relatedQuestion\": {\n      \"type\": \"number\",\n      \"description\":\"The input is related to this question\"\n      }\n  },\n  \"required\": [\"needsReply\", \"question\", \"answer\"]\n}\n"
+        "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"needsReply\": {\n      \"type\": \"boolean\"\n      },\n    \"question\": {\n      \"type\": \"string\",\n      \"description\":\"The next question if the last question is not asked. Remove the options in this question.\"\n      },\n    \"lastQuestionAsked\": {\n      \"type\": \"boolean\",\n      \"description\":\"Is the related question equal to the last question\"\n      },\n    \"notRelated\": {\n      \"type\": \"boolean\",\n      \"description\":\"If the input is not related to the proces\"\n      },\n    \"relatedQuestion\": {\n      \"type\": \"number\",\n      \"description\":\"The input is related to this question\"\n      },\n    \"option1\": {\n      \"type\": \"string\",\n      \"description\":\"The first option that belongs to the question. If that is not present. Skip it\"\n      },\n    \"option2\": {\n      \"type\": \"string\",\n      \"description\":\"The second option that belongs to the question. If that is not present. Skip it\"\n      }\n  },\n  \"required\": [\"needsReply\", \"question\", \"answer\"]\n}\n"
       },
-      "id": "2101854c-474b-4b4c-88e1-470f9fa1fc1e",
+      "id": "bb2e91a2-c341-4ce0-bbdc-2aad6c40a5e4",
       "name": "JSON Parser",
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "position": [
-        900,
+        640,
         500
       ],
       "typeVersion": 1
@@ -22,11 +22,11 @@
           "temperature": 0.9
         }
       },
-      "id": "3d770733-708e-409e-92c4-b483fff6dcbc",
+      "id": "5962661b-439e-455e-8d4f-57998d6c40ea",
       "name": "OpenAI Chat",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        720,
+        460,
         500
       ],
       "typeVersion": 1,
@@ -43,11 +43,11 @@
         "height": 394.42512272977456,
         "width": 304.10628068244364
       },
-      "id": "04b686b1-b9c2-4d4a-b23c-d2561fa55b83",
+      "id": "55f7d2c7-2ec0-486e-a63d-27d17762218a",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        380,
+        120,
         240
       ],
       "typeVersion": 1
@@ -56,25 +56,25 @@
       "parameters": {
         "content": "## ... that Needs a Reply in the form of a question or a thank you message\n",
         "height": 397,
-        "width": 556
+        "width": 736
       },
-      "id": "d8c8be88-3760-4829-a85c-2396eca6836e",
+      "id": "caa44582-0596-4b4e-ae75-5cce6e873c21",
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        700,
+        440,
         240
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
-        "content": "## Generate a Reply",
+        "content": "## Generate a  next Question",
         "height": 400,
         "width": 333,
         "color": 4
       },
-      "id": "930c929c-a42d-4c87-9c34-533348f928f8",
+      "id": "63144b70-e711-46fc-9fd4-64358337e4fd",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -90,7 +90,7 @@
         "width": 326,
         "color": 4
       },
-      "id": "b605bea5-9d4b-4021-a6c6-33b5517dcdea",
+      "id": "bc4ff5df-2843-4b49-8535-2d8aa515f981",
       "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -106,7 +106,7 @@
           "temperature": 0
         }
       },
-      "id": "0fc982f0-c580-4c4b-986a-36c6e40d9ebd",
+      "id": "160d17e5-935b-4373-9c33-a986f3875095",
       "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
@@ -123,20 +123,20 @@
     },
     {
       "parameters": {
-        "prompt": "=Subject: Aanvraag\nMessage:\n{{ $json.message.text }}",
+        "prompt": "=Subject: Aanvraag\nMessage:\n{{ $json.callback_query.data }}",
         "messages": {
           "messageValues": [
             {
-              "message": "Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Je stelt gerichte vragen om hun geschiktheid en beschikbaarheid te beoordelen en biedt tegelijkertijd ondersteuning door hun vragen te beantwoorden. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten.\n\nVragen die gesteld moeten worden:\n1.\tVraag aan de kandidaat of de aanvraag hem/haar aanspreekt?\n2.\tVraag de kandidaat of hij/zij beschikbaar is voor die periode en de gewenste uren zoals ze in de aanvraag staan vermeld?\n3.\tVraag de kandidaat  of hij/zij voldoet aan de eisen en groot gedeelte van de wensen zoals ze in de aanvraag staan vermeld?\n4.\tVraag de kandidaat of hij/zij een motivatie kan opsturen?\n5.\tVraag de kandidaat of hij/zij een CV max A4 kan opsturen?\n\nDoelstellingen:\nBekijk de invoer vanuit de kandidaat en bepaal op welke vraag dit een antwoord kan zijn. Als dat niet bepaald kan worden en het niet relateerbaar is aan de vragen. Geef dan aan dat je alleen kan reageren op onderdelen zoals vermeld in de aanvraag.\nVerzamel de benodigde informatie van kandidaat door een telkens 1 vraag te stellen.\nStel na elk antwoord van de kandidaat de volgende vraag die na de beantwoorde vraag moet komen.\nAls er bijvoorbeeld antwoord gegeven is op vraag 1. Stel dan vraag 2. Als er antwoord gegeven is op vraag 4. Stel dan vraag 5.\nNadat vraag 5 beantwoord is moet je de kandidaat vertellen dat je contact zal opnemen.\nStuur een bedankbericht na het ontvangen van het antwoord op vraag 5.\nBepaal ook of de laatste vraag al gesteld is.\nAls de gerelateerde vraag gelijk is 5 kan de volgende vraag niet gelijk zijn aan vraag 1,2,3,4 of 5.\n\nBijvoorbeeld:\nJe hebt het volgende bericht ontvangen. Hi ik heb mijn CV verstuurd. Omdat dit antwoord bij vraag 5 hoort dus ook een gerelateerd aan vraag 5. Zijn alle vragen al beantwoord.  \nVerwerk het nummer van de vraag in elk bericht om de voortgang te volgen.\n\nAls de kandidaat geen CV of motivatiebrief kan aanleveren dan moet je een  bedankbericht sturen, zoals: Aangezien je geen CV kunt aanleveren, kunnen we helaas niet verder gaan met het sollicitatieproces\n\nCommunicatierichtlijnen:\nHoud de communicatie beknopt en in een zakelijke informele toon.\nBegin elk bericht met \"Hallo\" en eindig met \"Met vriendelijke Groeten, De recruiter.\"\nGebruik alleen platte tekst, zonder speciale opmaak.\nAntwoord altijd in dezelfde taal als de inkomende e-mail.\n\nAutonomie:\nWerk autonoom volgens je specialiteit."
+              "message": "Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Je stelt gerichte vragen om hun geschiktheid en beschikbaarheid te beoordelen en biedt tegelijkertijd ondersteuning door hun vragen te beantwoorden. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten.\n\nVragen die gesteld moeten worden met de opties voor de antwoorden:\n1.\tVraag aan de kandidaat of de aanvraag hem/haar aanspreekt? (De aanvraag spreekt mij aan/ De aanvraag spreekt mij niet aan)\n2.\tVraag de kandidaat of hij/zij beschikbaar is voor die periode en de gewenste uren zoals ze in de aanvraag staan vermeld? (Ik ben beschikbaar/ Ik ben niet beschikbaar)\n3.\tVraag de kandidaat  of hij/zij voldoet aan de eisen en groot gedeelte van de wensen zoals ze in de aanvraag staan vermeld?  (Ik voldoe aan de eisen en wensen/ Ik voldoe niet aan de eisen en wensen)\n4.\tVraag de kandidaat of hij/zij een motivatie kan opsturen?  (Ik stuur een motivatie op/ Ik stuur geen motivatie op)\n5.\tVraag de kandidaat of hij/zij een CV max A4 kan opsturen? (Ik stuur een CV op/ Ik stuur geen CV op)\n\nDoelstellingen:\nBekijk de invoer vanuit de kandidaat en bepaal op welke vraag dit een antwoord kan zijn. Als dat niet bepaald kan worden en het niet relateerbaar is aan de vragen. Geef dan aan dat je alleen kan reageren op onderdelen zoals vermeld in de aanvraag.\nVerzamel de benodigde informatie van kandidaat door een telkens 1 vraag te stellen.\nStel na elk antwoord van de kandidaat de volgende vraag die na de beantwoorde vraag moet komen.\nAls er bijvoorbeeld antwoord gegeven is op vraag 1. Stel dan vraag 2. Als er antwoord gegeven is op vraag 4. Stel dan vraag 5.\nNadat vraag 5 beantwoord is moet je de kandidaat vertellen dat je contact zal opnemen.\nStuur een bedankbericht na het ontvangen van het antwoord op vraag 5.\nBepaal ook of de laatste vraag al gesteld is.\nAls de gerelateerde vraag gelijk is 5 kan de volgende vraag niet gelijk zijn aan vraag 1,2,3,4 of 5.\n\nBijvoorbeeld:\nJe hebt het volgende bericht ontvangen. Hi ik heb mijn CV verstuurd. Omdat dit antwoord bij vraag 5 hoort dus ook een gerelateerd aan vraag 5. Zijn alle vragen al beantwoord.  \nVerwerk het nummer van de vraag in elk bericht om de voortgang te volgen.\n\nAls de kandidaat geen CV of motivatiebrief kan aanleveren dan moet je een  bedankbericht sturen, zoals: Aangezien je geen CV kunt aanleveren, kunnen we helaas niet verder gaan met het sollicitatieproces\n\nCommunicatierichtlijnen:\nHoud de communicatie beknopt en in een zakelijke informele toon.\nBegin elk bericht met \"Hallo\" en eindig met \"Met vriendelijke Groeten, De recruiter.\"\nGebruik alleen platte tekst, zonder speciale opmaak.\nAntwoord altijd in dezelfde taal als de inkomende e-mail.\n\nAutonomie:\nWerk autonoom volgens je specialiteit."
             }
           ]
         }
       },
-      "id": "2d0fc6a8-77a8-4dd2-ad2a-c5c3ed099db3",
+      "id": "b7b03f8f-d9c2-4adb-a2cc-b918b5728c52",
       "name": "Assess if message needs a reply",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        720,
+        480,
         340
       ],
       "typeVersion": 1.3
@@ -148,7 +148,7 @@
         "width": 326,
         "color": 3
       },
-      "id": "3e533571-d334-4e61-9077-ed53faa15787",
+      "id": "010ec735-7010-4d45-9370-5206296a68bb",
       "name": "Sticky Note4",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -159,42 +159,45 @@
     },
     {
       "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        480,
-        340
-      ],
-      "id": "9143ff10-f6ab-4b61-a982-b40631dc09d3",
-      "name": "Telegram Trigger",
-      "webhookId": "77b0d9ff-cc52-4e66-8100-c4141cd88835",
-      "credentials": {
-        "telegramApi": {
-          "id": "30kGuK30FJR2KbPG",
-          "name": "Recruiter AI Telegram Account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
         "text": "={{ $json.text }}",
-        "additionalFields": {}
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "={{ $('Assess if message needs a reply').item.json.option1 || 'OK' }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('If Needs Success Reply').item.json.option1 || 'OK' }}"
+                    }
+                  },
+                  {
+                    "text": "={{ $('Assess if message needs a reply').item.json.option2 || 'OK' }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('Assess if message needs a reply').item.json.option2 || 'OK' }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.callback_query.message.message_id }}"
+        }
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1720,
+        1940,
         320
       ],
-      "id": "88e7ea0c-4116-438b-9d7f-b61a6cb56ff5",
+      "id": "b874b64e-121c-477e-a547-c1465878fe68",
       "name": "Telegram",
-      "webhookId": "87d23eb2-7e66-46a2-9612-1816edad6438",
+      "webhookId": "1bee34bf-fece-48f3-813c-089f5f514cf3",
+      "notesInFlow": false,
       "credentials": {
         "telegramApi": {
           "id": "30kGuK30FJR2KbPG",
@@ -204,7 +207,7 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
         "text": "={{ $json.text }}",
         "additionalFields": {}
       },
@@ -214,9 +217,9 @@
         1740,
         800
       ],
-      "id": "72fd99b7-b2d6-47ea-b8a0-4a1dd50c493c",
+      "id": "ba994ee7-cfb6-4d1a-82a9-68c75170288c",
       "name": "Telegram1",
-      "webhookId": "87d23eb2-7e66-46a2-9612-1816edad6438",
+      "webhookId": "44689bef-c19c-49ec-9e1c-23276167de3d",
       "credentials": {
         "telegramApi": {
           "id": "30kGuK30FJR2KbPG",
@@ -231,7 +234,7 @@
         "width": 333,
         "color": 3
       },
-      "id": "68c04a93-95c3-4676-99d7-802474435ae6",
+      "id": "232836b6-3606-4271-b311-bc9856983956",
       "name": "Sticky Note5",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -252,7 +255,7 @@
           ]
         }
       },
-      "id": "b81cd499-ecca-4088-a40b-1dc387593ac9",
+      "id": "3b449944-3ac9-4d89-b3e1-86090ad190d9",
       "name": "Generate error message",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
@@ -264,7 +267,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Context:\nQuestion = {{ $json.question }}\nneedsReply = {{ $('Assess if message needs a reply').item.json.needsReply }}\nlastQuestionAsked = {{ $json.lastQuestionAsked }}\nnotRelated = {{ $json.notRelated }}\nrelatedQuestion = {{ $json.relatedQuestion }}",
+        "text": "=Context:\nQuestion = {{ $json.question }}\nneedsReply = {{ $('Assess if message needs a reply').item.json.needsReply }}\nlastQuestionAsked = {{ $json.lastQuestionAsked }}\nnotRelated = {{ $json.notRelated }}\nrelatedQuestion = {{ $json.relatedQuestion }}\noption1 = {{ $('Assess if message needs a reply').item.json.option1 }}\noption2 = {{ $('Assess if message needs a reply').item.json.option2 }}",
         "messages": {
           "messageValues": [
             {
@@ -273,11 +276,11 @@
           ]
         }
       },
-      "id": "da7ed06d-c331-4fa4-b2fb-f1526df564cc",
+      "id": "5bbf38d2-edcd-46e3-8ee4-1a3d9c799260",
       "name": "Generate message reply",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        1300,
+        1340,
         320
       ],
       "typeVersion": 1.4
@@ -297,7 +300,7 @@
         1340,
         920
       ],
-      "id": "f861b8f3-de8b-44b7-ae46-deff76807a86",
+      "id": "a06ec512-62ae-41be-ad5a-a7e16f465b3c",
       "name": "OpenAI Chat Model Error",
       "credentials": {
         "openAiApi": {
@@ -323,32 +326,441 @@
                 "operation": "true",
                 "singleValue": true
               },
-              "leftValue": "={{ $json.needsReply }}",
+              "leftValue": "={{ $json.needsReply || $json.lastQuestionAsked || $json.relatedQuestion === 5 }}",
               "rightValue": "true"
-            },
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f3d95552-5240-4ec4-969c-4026920652dd",
+      "name": "If Needs Success Reply",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        780,
+        340
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "https://app.loxo.co/api/hr4professionals/jobs",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
             {
-              "id": "65e12be4-9623-4ef5-bedf-e98aa56cc37c",
-              "leftValue": "={{ $json.lastQuestionAsked || $json.relatedQuestion === 5 }}",
+              "name": "query",
+              "value": "={{ $json.query.job}}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "5ac31a5e4eb2ae3c720227c2ac08cf1045c3c5ba5b2489dad01c777875e8a787fbb3b6f0a746a7bbeb26462435c9df114c2d655c016ec69931990d729c451edd532649ddcb50e7a5a6fbbcf451b4bcba8ac9e5dd684cb1a45ddc4f16f40d49f15cf3b0b813118555b7a23f45fe8a97f2448e4eb6b61050942e3a722e63cb98ea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        360,
+        1240
+      ],
+      "id": "6e837d9f-7523-4bc2-a98a-301be416378d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "d8994fdd-8f4a-407d-acf3-71e26becdfb3",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        280,
+        1100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394,
+        "width": 684
+      },
+      "id": "5d6fd4c8-540c-452b-855e-66b9a8792d40",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        1100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1680,
+        1200
+      ],
+      "id": "d88d84a2-5784-4458-84f5-91be724366d8",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "path": "080dea51-6db5-4d9f-9607-a2190f88a066",
+        "authentication": "basicAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        1240
+      ],
+      "id": "693419b8-31ec-461b-a37a-dd79ebf45687",
+      "name": "Webhook",
+      "webhookId": "080dea51-6db5-4d9f-9607-a2190f88a066",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "UJjV7AkswpW12HYY",
+          "name": "Recruiter webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394,
+        "width": 584
+      },
+      "id": "e96a947b-3e8f-463b-b9c6-e08f629c385b",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        1100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        1380
+      ],
+      "id": "09f3f554-a317-49e4-a437-f678abc3a0d4",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an agent who always response with the JSON response:\n\nJSON:\n{{ JSON.stringify($json.results) }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        780,
+        1200
+      ],
+      "id": "a3641e51-7ee6-45b5-9ed4-06102290847a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "c102058e-1557-47f5-9f0c-c3f5650bf23f",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -60,
+        1100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "updates": [
+          "callback_query",
+          "channel_post",
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        380
+      ],
+      "id": "d679e66a-5a1e-4613-93f4-475552d5f7ff",
+      "name": "Telegram Trigger",
+      "webhookId": "5f029d86-2fa6-4847-b09b-875088542c23",
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Generate an end Reply",
+        "height": 400,
+        "width": 333,
+        "color": 4
+      },
+      "id": "34107c1f-c4c8-4b90-9bf5-48c0b26c7cb4",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        -180
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ...sent to the candidate",
+        "height": 395,
+        "width": 326,
+        "color": 4
+      },
+      "id": "31e7c5f9-8bc2-4114-a8b1-d4ab72a524af",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1640,
+        -180
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Context:\nQuestion = {{ $json.question }}\nneedsReply = {{ $('Assess if message needs a reply').item.json.needsReply }}\nlastQuestionAsked = {{ $json.lastQuestionAsked }}\nnotRelated = {{ $json.notRelated }}\nrelatedQuestion = {{ $json.relatedQuestion }}\noption1 = {{ $('Assess if message needs a reply').item.json.option1 }}\noption2 = {{ $('Assess if message needs a reply').item.json.option2 }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \nAls needsReply is true en de question is niet leeg en de relatedQuestion is ongelijk aan 5:\nStel de vraag aan de kandidaat als deze aanwezig is in de question parameter:  {{ $json.question }}. \n\nAls de relatedQuestion gelijk is aan 5 en de needsReply is \"true\" en de notRelated is \"false\":\nGeef aan dat het proces afgerond is. Bedankt de kandidaat en geef aan dat je snel contact zal opnemen.\n\nGebruik de context.\n\nAls notRelated gelijk aan true is:\nBedankt de kandidaat en geef aan dat je alleen kan reageren op zaken die betrekking hebben op een aanvraag.\nProbeer nooit zelf een vraag te beanwoorden.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "8d37a127-edc3-456e-ab1c-9369927a78e0",
+      "name": "Generate message reply1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1340,
+        -40
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1740,
+        -40
+      ],
+      "id": "dbffa852-cb44-4638-9153-0b8891d5117a",
+      "name": "Telegram End",
+      "webhookId": "1bee34bf-fece-48f3-813c-089f5f514cf3",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5716947f-6b97-4795-8124-9f07297ac0ae",
+              "leftValue": "={{ $json.option1 }}",
               "rightValue": "",
               "operator": {
-                "type": "boolean",
-                "operation": "true",
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "ab7146c1-a56d-45c1-a304-eed840056f24",
+              "leftValue": "={{ $json.option2 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
                 "singleValue": true
               }
             }
           ],
-          "combinator": "or"
+          "combinator": "and"
         },
         "options": {}
       },
-      "id": "333ac5ca-eeda-411f-add7-d8d2d6adae81",
-      "name": "If Needs Success Reply",
+      "id": "5a770bd8-7d58-4685-b000-1bfa68d71e9c",
+      "name": "If Success Reply With Options",
       "type": "n8n-nodes-base.if",
       "position": [
-        1040,
-        340
+        980,
+        300
       ],
       "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        120
+      ],
+      "id": "e988256b-cef5-4b84-8ef6-70e01bea4f80",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5716947f-6b97-4795-8124-9f07297ac0ae",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a7fb5b9b-5ef4-4c7d-9dbf-f94236ee4f5d",
+      "name": "If Success Reply With Options1",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1700,
+        420
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "={{ $('Assess if message needs a reply').item.json.option1 || 'OK' }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('If Needs Success Reply').item.json.option1 || 'OK' }}"
+                    }
+                  },
+                  {
+                    "text": "={{ $('Assess if message needs a reply').item.json.option2 || 'OK' }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('Assess if message needs a reply').item.json.option2 || 'OK' }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.callback_query.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1940,
+        460
+      ],
+      "id": "02bc2faf-0402-4da8-8913-ca0d5dda6f83",
+      "name": "Telegram2",
+      "webhookId": "1bee34bf-fece-48f3-813c-089f5f514cf3",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -397,17 +809,6 @@
         ]
       ]
     },
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Assess if message needs a reply",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Generate error message": {
       "main": [
         [
@@ -423,7 +824,7 @@
       "main": [
         [
           {
-            "node": "Telegram",
+            "node": "If Success Reply With Options1",
             "type": "main",
             "index": 0
           }
@@ -445,7 +846,7 @@
       "main": [
         [
           {
-            "node": "Generate message reply",
+            "node": "If Success Reply With Options",
             "type": "main",
             "index": 0
           }
@@ -458,17 +859,124 @@
           }
         ]
       ]
+    },
+    "Telegram": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Assess if message needs a reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate message reply1": {
+      "main": [
+        [
+          {
+            "node": "Telegram End",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Success Reply With Options": {
+      "main": [
+        [
+          {
+            "node": "Generate message reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate message reply1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate message reply1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Success Reply With Options1": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {},
-  "versionId": "3916f901-027f-462c-a06a-dea3846f08d3",
+  "versionId": "1fbc04fd-0513-4e0a-907d-f7419b5ba1d6",
   "meta": {
     "templateId": "2271",
     "templateCredsSetupCompleted": true,
     "instanceId": "57d2f18e1f410a2e5e28fdaeeb5f59875a002a289f1e505ffd3e8be762215818"
   },
-  "id": "lIKP53JK29xUJec8",
+  "id": "MMKx0FuDMeZSEqvx",
   "tags": [
     {
       "createdAt": "2025-03-08T07:05:49.728Z",
