@@ -11,7 +11,7 @@
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1740,
+        -1420,
         200
       ],
       "typeVersion": 1
@@ -438,7 +438,7 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
-        -1660,
+        -1340,
         340
       ],
       "id": "8933bfe8-67ed-412e-8daf-a269469e1feb",
@@ -573,39 +573,6 @@
           "parameters": [
             {
               "name": "question",
-              "value": "={{ $('Telegram Trigger').item.json.callback_query.data }} ({{ $('AI Agent2').item.json.output.job_id }})"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -260,
-        120
-      ],
-      "id": "3c3d2cab-c1a3-4939-a009-f16835c06a6e",
-      "name": "HTTP Request Question Agent"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://d269-84-24-210-240.ngrok-free.app/api/v1/prediction/5f4ebfef-0815-470e-a9bb-b015d78c5ce6",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "question",
               "value": "={{ $('Telegram Trigger').item.json.message.text }}{{ $('Telegram Trigger').item.json.callback_query.data }} ({{ $('AI Agent2').item.json.output.job_id }})"
             }
           ]
@@ -616,7 +583,7 @@
       "typeVersion": 4.2,
       "position": [
         -260,
-        480
+        360
       ],
       "id": "07208c96-5216-42ee-8964-37c3bd0d41cd",
       "name": "HTTP Request Question Agent1"
@@ -647,80 +614,16 @@
     },
     {
       "parameters": {
-        "content": "## Wat voor bericht is het?\n",
-        "height": 394.42512272977456,
-        "width": 304.10628068244364
-      },
-      "id": "b6129343-d523-4e82-8ee9-1c40f844b70c",
-      "name": "Sticky Note12",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -720,
-        200
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 1
-          },
-          "conditions": [
-            {
-              "id": "53849246-ad32-4845-9976-9f9688f5a6f2",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
-                "singleValue": true
-              },
-              "leftValue": "={ $('Telegram Trigger').item.json.message.text }}{{ $('Telegram Trigger').item.json.callback_query.data }}",
-              "rightValue": "NO_QUESTION"
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "8d6db80c-4ba7-4ba7-9d68-882b44e6cd81",
-      "name": "Een bericht via buttons of via textinput?",
-      "type": "n8n-nodes-base.if",
-      "position": [
-        -600,
-        340
-      ],
-      "typeVersion": 2
-    },
-    {
-      "parameters": {
-        "content": "## Haal de volgende vraag op, op basis van een actie button",
-        "height": 337,
-        "width": 376
-      },
-      "id": "5c22b1b3-8bee-4e2f-ba2c-5eb876d115f3",
-      "name": "Sticky Note13",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -380,
-        0
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
         "content": "## Haal de volgende vraag op, op basis van een input text",
-        "height": 337,
+        "height": 397,
         "width": 376
       },
       "id": "325af8c5-79db-4751-b0e8-3cf1ba871c58",
       "name": "Sticky Note14",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -380,
-        360
+        -400,
+        200
       ],
       "typeVersion": 1
     },
@@ -1269,7 +1172,7 @@
       "name": "Sticky Note20",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1400,
+        -1080,
         200
       ],
       "typeVersion": 1
@@ -1303,7 +1206,7 @@
       "name": "Is a file uploaded",
       "type": "n8n-nodes-base.if",
       "position": [
-        -1340,
+        -1020,
         340
       ],
       "typeVersion": 2
@@ -2063,8 +1966,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -1020,
-        360
+        -720,
+        340
       ],
       "id": "db8848dc-c00a-42df-a815-5b3bccbf6808",
       "name": "AI Agent2"
@@ -2081,7 +1984,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -1040,
+        -720,
         500
       ],
       "id": "fa39390f-f788-48f2-898d-2e5c8fc6aab3",
@@ -2101,7 +2004,7 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        -860,
+        -540,
         500
       ],
       "id": "9f7ca13f-0590-45fb-bdb4-01ce55dea8b9",
@@ -2117,7 +2020,7 @@
       "name": "Sticky Note30",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1060,
+        -740,
         200
       ],
       "typeVersion": 1
@@ -2229,40 +2132,11 @@
         ]
       ]
     },
-    "HTTP Request Question Agent": {
-      "main": [
-        [
-          {
-            "node": "Parse JSON",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTTP Request Question Agent1": {
       "main": [
         [
           {
             "node": "Parse JSON",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Een bericht via buttons of via textinput?": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request Question Agent",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "HTTP Request Question Agent1",
             "type": "main",
             "index": 0
           }
@@ -2763,7 +2637,7 @@
       "main": [
         [
           {
-            "node": "Een bericht via buttons of via textinput?",
+            "node": "HTTP Request Question Agent1",
             "type": "main",
             "index": 0
           }
@@ -2771,9 +2645,9 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {},
-  "versionId": "ee2b846c-2dc6-4ea2-9c37-6c4548028238",
+  "versionId": "f2636236-38a4-480e-9da1-bc05d77861a7",
   "meta": {
     "templateId": "2271",
     "templateCredsSetupCompleted": true,
