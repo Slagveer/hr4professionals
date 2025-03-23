@@ -1,0 +1,2797 @@
+{
+  "name": "Telegram AI Recruiter Auto-Responder: Create Draft Replies to incoming telegram messages Flowise",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Ontvang een Telegram bericht van de kandidaat\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "bdb13765-fd01-49c5-81d4-33b1e0d678fa",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1740,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Parse de jSON data",
+        "height": 377,
+        "width": 256
+      },
+      "id": "4e2314ca-eec5-4ff3-9fe4-56dcdd1e83d9",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        20,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Generereer een volgende vraag",
+        "height": 400,
+        "width": 333,
+        "color": 4
+      },
+      "id": "7d99f7a8-b8da-4dcc-a6fb-39ae27be8378",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        220
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ...Stuur het naar de kandidaat",
+        "height": 395,
+        "width": 486,
+        "color": 4
+      },
+      "id": "8da1c307-71a8-47e7-b087-dc2e754c7f6f",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1960,
+        220
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": "gpt-4-turbo",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "6499a7e5-15b6-4aac-9c7f-f0d9bc9b7204",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        1640,
+        440
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ...Stuur het naar de kandidaat",
+        "height": 395,
+        "width": 486,
+        "color": 3
+      },
+      "id": "a09cafcd-9765-4560-86ff-074975a3f80c",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1960,
+        1080
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('Generate message reply').item.json.text }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "={{ $('Is er een volgende vraag?').item.json.text.option1 }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('Is er een volgende vraag?').item.json.text.option1 }} ({{ $('AI Agent2').item.json.output.job_id }})"
+                    }
+                  },
+                  {
+                    "text": "={{ $('Is er een volgende vraag?').item.json.text.option2 }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('Is er een volgende vraag?').item.json.text.option2 }} ({{ $('AI Agent2').item.json.output.job_id }})"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        300
+      ],
+      "id": "9e0ed9c9-d584-4a3a-93b9-bc2cc527b868",
+      "name": "Telegram",
+      "webhookId": "bb6e6c31-7f8c-40c4-85d5-3f5ab4c0a4d5",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        1160
+      ],
+      "id": "333afd2a-2465-4a21-afe7-b67d7daf389d",
+      "name": "Telegram1",
+      "webhookId": "f3ae2c95-f2a6-4129-a17d-2ea9e509da7a",
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Genereer een eind bericht omdat de invoer niet voldoet aan de verwachtingen",
+        "height": 400,
+        "width": 333,
+        "color": 3
+      },
+      "id": "f520f168-823a-4a37-a763-7d68ac896c01",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        1080
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Subject: De Aanvraag\nMessage: We kunnen alleen reageren op vragen en antwoorden met betrekking tot deze aanvraag.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. Bedankt de kandidaat voor de reactie en geef aan dat je alleen kan reageren op vragen en antwoorden met betrekking tot de aanvraag.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "48d84f46-d278-4c46-8ce1-4ae122848013",
+      "name": "Generate error message",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1640,
+        1240
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Context:\nQuestion = {{ $json.text.nextQuestion }}\noption1 = {{ $json.text.option1 }}\noption2 = {{ $json.text.option2 }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \nStel de vraag aan de kandidaat als deze aanwezig is in de question parameter: {{ $json.text.nextQuestion }}. Stel deze vraag altijd in de je vorm. Dus als de vraag gelijk aan \"Vraag de kandidaat of hij/zij beschikbaar is voor die periode en de gewenste uren zoals ze in de aanvraag staan vermeld\". Moet de vraag als volgt zijn: Ben je beschikbaar voor de periode en de gewenste uren zoals deze in de aanvraag vermeld staat?\n\nAls de question gelijk is aan NO_QUESTION_MORE:\nGeef aan dat het proces afgerond is. Bedankt de kandidaat en geef aan dat je snel contact zal opnemen.\n\nGebruik de context.\n\nAls de Question gelijk is aan NO_QUESTION\nBedankt de kandidaat en geef aan dat je alleen kan reageren op zaken die betrekking hebben op een aanvraag.\nProbeer nooit zelf een vraag te beanwoorden.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nof\n\n{{ $('Telegram Trigger').item.json.callback_query.message.chat.first_name }} {{ $('Telegram Trigger').item.json.callback_query.message.chat.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "1926aff5-61c4-4e35-8fe4-60e07184c2b1",
+      "name": "Generate message reply",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1660,
+        300
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1660,
+        1340
+      ],
+      "id": "12821cc3-368a-423f-b7cb-378f7c1e78fa",
+      "name": "OpenAI Chat Model Error",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://app.loxo.co/api/hr4professionals/jobs",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $json.query.job}}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "5ac31a5e4eb2ae3c720227c2ac08cf1045c3c5ba5b2489dad01c777875e8a787fbb3b6f0a746a7bbeb26462435c9df114c2d655c016ec69931990d729c451edd532649ddcb50e7a5a6fbbcf451b4bcba8ac9e5dd684cb1a45ddc4f16f40d49f15cf3b0b813118555b7a23f45fe8a97f2448e4eb6b61050942e3a722e63cb98ea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        1780
+      ],
+      "id": "43209c79-f1f3-4765-a25b-befd1657d456",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "4a4bf1d3-c275-41e7-bc60-9b8bc27e8239",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        220,
+        1640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394,
+        "width": 684
+      },
+      "id": "93f5d124-384c-43c7-8daf-4897f0b33c72",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1220,
+        1640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1620,
+        1740
+      ],
+      "id": "1d5ca19f-8d5d-4048-ab8f-33304b73a0c3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "path": "10c09f20-75f8-48f9-a585-8725b99c8679",
+        "authentication": "basicAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        1780
+      ],
+      "id": "85a05539-7cec-40df-b7ef-388c7132f745",
+      "name": "Webhook",
+      "webhookId": "10c09f20-75f8-48f9-a585-8725b99c8679",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "UJjV7AkswpW12HYY",
+          "name": "Recruiter webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394,
+        "width": 584
+      },
+      "id": "1d671d08-bca7-48d4-93dc-5857b391be8c",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        580,
+        1640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        1920
+      ],
+      "id": "de387d8e-94b2-4f68-8be0-8868b7591276",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an agent who always response with the JSON response:\n\nJSON:\n{{ JSON.stringify($json.results) }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        720,
+        1740
+      ],
+      "id": "c1c85ef3-cdd1-4bc3-9111-176e72043bfa",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## When I receive an message from a candidate\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "fcc03420-1771-44f8-a892-b88e8d42bf12",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -120,
+        1640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "updates": [
+          "callback_query",
+          "channel_post",
+          "message",
+          "inline_query"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1660,
+        340
+      ],
+      "id": "8933bfe8-67ed-412e-8daf-a269469e1feb",
+      "name": "Telegram Trigger",
+      "webhookId": "59e06d52-d76e-43ed-8978-ec76043945b9",
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Genereer een eind bericht als het proces afgerond is",
+        "height": 400,
+        "width": 333,
+        "color": 4
+      },
+      "id": "5d9135a3-3e07-4e23-ae77-a34bb458f8a3",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        -200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ...Stuur het bericht naar de kandidaat",
+        "height": 395,
+        "width": 486,
+        "color": 4
+      },
+      "id": "cc2f0e09-b7b9-4dcd-8f83-6cf31a1c2bec",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1960,
+        -200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1660,
+        80
+      ],
+      "id": "ddce8251-f22e-4cbf-b91a-b353f2cbce3c",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "={{ $('Generate message reply').item.json.text }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "={{ $('Parse JSON').item.json.text.option1 }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('Parse JSON').item.json.text.option1 }} ({{ $('AI Agent2').item.json.output.job_id }})"
+                    }
+                  },
+                  {
+                    "text": "={{ $('Parse JSON').item.json.text.option2 }}",
+                    "additionalFields": {
+                      "callback_data": "={{ $('Parse JSON').item.json.text.option2 }} ({{ $('AI Agent2').item.json.output.job_id }})"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        440
+      ],
+      "id": "14ef439c-11a1-46ea-a0b4-c9c96ccd07f1",
+      "name": "Telegram2",
+      "webhookId": "e48910c3-f26e-4d6d-83ce-a181e8734d20",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://d269-84-24-210-240.ngrok-free.app/api/v1/prediction/5f4ebfef-0815-470e-a9bb-b015d78c5ce6",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "={{ $('Telegram Trigger').item.json.callback_query.data }} ({{ $('AI Agent2').item.json.output.job_id }})"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -260,
+        120
+      ],
+      "id": "3c3d2cab-c1a3-4939-a009-f16835c06a6e",
+      "name": "HTTP Request Question Agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://d269-84-24-210-240.ngrok-free.app/api/v1/prediction/5f4ebfef-0815-470e-a9bb-b015d78c5ce6",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "question",
+              "value": "={{ $('Telegram Trigger').item.json.message.text }}{{ $('Telegram Trigger').item.json.callback_query.data }} ({{ $('AI Agent2').item.json.output.job_id }})"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -260,
+        480
+      ],
+      "id": "07208c96-5216-42ee-8964-37c3bd0d41cd",
+      "name": "HTTP Request Question Agent1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        1300
+      ],
+      "id": "8ad9abed-9e7f-4796-9726-fbbdbe9664ea",
+      "name": "Telegram3",
+      "webhookId": "f3ae2c95-f2a6-4129-a17d-2ea9e509da7a",
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Wat voor bericht is het?\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "b6129343-d523-4e82-8ee9-1c40f844b70c",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "53849246-ad32-4845-9976-9f9688f5a6f2",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              },
+              "leftValue": "={ $('Telegram Trigger').item.json.message.text }}{{ $('Telegram Trigger').item.json.callback_query.data }}",
+              "rightValue": "NO_QUESTION"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8d6db80c-4ba7-4ba7-9d68-882b44e6cd81",
+      "name": "Een bericht via buttons of via textinput?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -600,
+        340
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## Haal de volgende vraag op, op basis van een actie button",
+        "height": 337,
+        "width": 376
+      },
+      "id": "5c22b1b3-8bee-4e2f-ba2c-5eb876d115f3",
+      "name": "Sticky Note13",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -380,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Haal de volgende vraag op, op basis van een input text",
+        "height": 337,
+        "width": 376
+      },
+      "id": "325af8c5-79db-4751-b0e8-3cf1ba871c58",
+      "name": "Sticky Note14",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -380,
+        360
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Zijn er vraag opties?",
+        "height": 377,
+        "width": 256
+      },
+      "id": "d36a551b-7495-4f71-8cd4-11045aef91f6",
+      "name": "Sticky Note15",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        620,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Is er een volgende vraag te stellen?",
+        "height": 377,
+        "width": 256
+      },
+      "id": "9de3cfd2-6411-48e8-9c01-5d34a8d06a60",
+      "name": "Sticky Note16",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5716947f-6b97-4795-8124-9f07297ac0ae",
+              "leftValue": "={{ $json.text.nextQuestion }}",
+              "rightValue": "NO_QUESTION_MORE",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "d74e80af-5917-4ecb-b91d-44cc2f807c92",
+              "leftValue": "={{ $json.text.nextQuestion }}",
+              "rightValue": "NO_QUESTION",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "45ab0bf1-c2d4-4496-8fca-74b8a3b66198",
+              "leftValue": "={{ $json.text.option1 }}",
+              "rightValue": "NO_OPTION",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "f97b189c-1c40-488d-a759-588f52c8b4f9",
+              "leftValue": "={{ $json.text.option2 }}",
+              "rightValue": "NO_OPTION",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fc9631d4-dc46-487f-a29d-589abab2fe36",
+      "name": "Is er een volgende vraag?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        380,
+        300
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ddf5fe7c-b118-4c77-a7ab-ceb960bd0c5e",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        300
+      ],
+      "id": "de9b8828-9554-4254-a7c3-9dcca310197f",
+      "name": "Parse JSON"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Context:\nQuestion = {{ $json.text.nextQuestion }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \n\nGeef aan dat het proces afgerond is. Bedankt de kandidaat en geef aan dat je snel contact zal opnemen.\n\nGebruik de context.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "c19ee000-8043-4539-8903-6f07516bc1db",
+      "name": "Genereer een eind bericht",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1660,
+        -80
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        -120
+      ],
+      "id": "95e22931-96ac-4186-878f-c759cf85912e",
+      "name": "Telegram Eind Bericht",
+      "webhookId": "de7fb90a-3c9f-434f-aa72-95c99ce36953",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5716947f-6b97-4795-8124-9f07297ac0ae",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b86c8f52-c475-498e-81de-6b421b0a9f9f",
+      "name": "Is het een text input bericht?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2020,
+        400
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5716947f-6b97-4795-8124-9f07297ac0ae",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ec91c351-caf6-4f98-88c7-0906f9d470b7",
+      "name": "Is het een text input bericht?1",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2020,
+        -40
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        40
+      ],
+      "id": "67ea2f3f-4f00-472f-a114-7d028b93a29c",
+      "name": "Telegram Eind Bericht1",
+      "webhookId": "de7fb90a-3c9f-434f-aa72-95c99ce36953",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "4bf16bf3-a847-4f87-9ed6-c9df695e80f7",
+              "leftValue": "={{ $json.text.nextQuestion }}",
+              "rightValue": "NO_QUESTION_MORE",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "f177280d-17c7-436e-a3de-0c60a6bd161c",
+              "leftValue": "{{ $json.text.nextQuestion }}",
+              "rightValue": "NO_QUESTION_NEEDED",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f89e3e94-ba84-4df0-b52c-c7568ec1b110",
+      "name": "Zijn er opties?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        680,
+        320
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## ...stuur het naar de kandidaat",
+        "height": 395,
+        "width": 486,
+        "color": 3
+      },
+      "id": "ea6554b6-4304-4848-bb72-56235f124b01",
+      "name": "Sticky Note17",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1960,
+        660
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        720
+      ],
+      "id": "3af3c83a-95ad-4b51-b9af-04650b0e77a3",
+      "name": "Telegram4",
+      "webhookId": "f3ae2c95-f2a6-4129-a17d-2ea9e509da7a",
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Genereer een eind bericht omdat de kandidaat niet verder wilt in het proces",
+        "height": 400,
+        "width": 333,
+        "color": 3
+      },
+      "id": "2da2425f-9d5c-4e01-9a4d-e81cf5cc1bd8",
+      "name": "Sticky Note18",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        660
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Subject: De Aanvraag\nMessage: Kandidaat heeft geen interesse.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. Bedankt de kandidaat en geef aan dat je op zoek gaat naar andere aanvragen die misschien wel interessant kunnen zijn.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "512c4b4d-5ebe-46ec-aed9-5273da6782ec",
+      "name": "Generate error message1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1640,
+        780
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1660,
+        920
+      ],
+      "id": "cc5b7b42-45d1-4f15-9f96-332458bf449a",
+      "name": "OpenAI Chat Model Error1",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2260,
+        880
+      ],
+      "id": "85b49997-0437-43ad-b16c-1605d6c7d132",
+      "name": "Telegram5",
+      "webhookId": "f3ae2c95-f2a6-4129-a17d-2ea9e509da7a",
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Wilt de kandidaat stoppen?",
+        "height": 377,
+        "width": 256
+      },
+      "id": "9407a850-a015-4103-b98a-fe7f3443b1b0",
+      "name": "Sticky Note19",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        900,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "53849246-ad32-4845-9976-9f9688f5a6f2",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.text.nextQuestion }}",
+              "rightValue": "NO_QUESTION_NEEDED"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a083474b-ca3f-4a11-b28a-8adb6067c858",
+      "name": "Kandidaat wilt stoppen",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        980,
+        380
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "53849246-ad32-4845-9976-9f9688f5a6f2",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "rightValue": "NO_QUESTION"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "bc9c6cc0-10b0-47b7-9017-91c02b063d4b",
+      "name": "Is het een text input bericht?2",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2020,
+        780
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "53849246-ad32-4845-9976-9f9688f5a6f2",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "rightValue": "NO_QUESTION"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7ca46041-de6c-469a-a280-5087b75db2e6",
+      "name": "Is het een text input bericht?3",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2020,
+        1240
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## Is a file uploaded?\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "1718b4e4-5aea-4df6-9a09-d10082f89a76",
+      "name": "Sticky Note20",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1400,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "9b876834-1a86-48f1-9890-df60c739c91c",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.message.document }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8ad60969-b3ae-4548-9d54-44e04b9cf35e",
+      "name": "Is a file uploaded",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -1340,
+        340
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Telegram Trigger').item.json.message.from.first_name.toLowerCase() }}_{{ $('Telegram Trigger').item.json.message.from.last_name }}_{{ $json.message.document.file_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1cOlN1PikbUYvLg9gITsBuhf3NXea6yOr",
+          "mode": "list",
+          "cachedResultName": "recruitement",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cOlN1PikbUYvLg9gITsBuhf3NXea6yOr"
+        },
+        "options": {}
+      },
+      "id": "f95fe767-4348-4f91-bb6b-f6c388717a16",
+      "name": "Upload File to GDrive",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        -340,
+        -260
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "U7IMMXvPy6h4XXh1",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "loader": "docxLoader",
+        "options": {}
+      },
+      "id": "b18ab1dd-3fdf-44df-af0d-303dfe77b0b1",
+      "name": "Binary Input Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentBinaryInputLoader",
+      "position": [
+        640,
+        -880
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "8eb2078d-e26b-498f-94ba-8a1e890c3c84",
+      "name": "Token Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "position": [
+        660,
+        -740
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        540,
+        -880
+      ],
+      "id": "ed6bd92c-97bd-4b05-b7bd-3c8b7c11ad93",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data",
+          "fileName": "={{ $json.name }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -120,
+        -260
+      ],
+      "id": "05cf96aa-4c42-45ee-a070-dfa4c9ab9582",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "U7IMMXvPy6h4XXh1",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## File geupload door kandidaat",
+        "height": 337,
+        "width": 676
+      },
+      "id": "5f2255c6-1c55-4714-a479-7c8e1389ee97",
+      "name": "Sticky Note21",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -380,
+        -360
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Word file geupload door kandidaat",
+        "height": 537,
+        "width": 556
+      },
+      "id": "bde35153-3c92-4dac-9747-124896c0bf6f",
+      "name": "Sticky Note22",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        380,
+        -1160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "587a8402-1d11-4548-94b9-377b5369e7a6",
+      "name": "Summarization Chain1",
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "position": [
+        560,
+        -500
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "loader": "pdfLoader",
+        "options": {}
+      },
+      "id": "5ebc91be-0398-4e70-ad21-84bf6941e4f5",
+      "name": "Binary Input Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentBinaryInputLoader",
+      "position": [
+        620,
+        -340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "72f1e754-9b4c-41b3-8045-71b73384ac26",
+      "name": "Token Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "position": [
+        660,
+        -180
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        520,
+        -340
+      ],
+      "id": "e0cd83fd-2a0f-4017-83a0-ab11bb5cc1d5",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## PDF file geupload door kandidaat",
+        "height": 577,
+        "width": 556
+      },
+      "id": "313e5fe7-fc4e-4cef-8fb4-9721cebf5b52",
+      "name": "Sticky Note23",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        380,
+        -600
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Context:\nQuestion = {{ $json.text.nextQuestion }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \n\nBedank de kandidaat voor het versturen van het bestand maar dat deze niet verwerkt kan worden omdat het type niet correct is. Geef aan dat je alleen Word en PDF documenten ondersteund.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "8b2eee82-d61f-43de-80ed-b8ff86935b06",
+      "name": "Genereer een eind bericht1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1640,
+        -460
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "content": "## Genereer een bericht om aan te geven dat het type niet voldoet",
+        "height": 400,
+        "width": 333,
+        "color": 3
+      },
+      "id": "940e1fe6-3212-476b-b9bc-bd57cc5b892c",
+      "name": "Sticky Note24",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        -620
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        -320
+      ],
+      "id": "edd31133-094e-4927-b877-36e14b729c59",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Bepaal of de onderstaande context een motivatie brief is, geef dan altijd de waarde \"MOTIVATIE_BRIEF\" terug. Als het een CV betreft, geef dan \"CV\" terug.\nAls het geen van beiden is, moet er \"UNKNOWN\" teruggegeven worden.\n\nContext:\n{{ $json.response.text }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1060,
+        -1060
+      ],
+      "id": "a7db140f-50e2-45f8-b762-d1cf60c52b11",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1060,
+        -900
+      ],
+      "id": "1f9605c8-49ea-459b-a293-c3e42ebf931b",
+      "name": "OpenAI Chat Model6",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b4ee245b-253f-4bea-afe4-3d7d3192c9af",
+      "name": "Summarization Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "position": [
+        560,
+        -1060
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n   \"properties\": {\n      \"documentType\": {\n          \"type\": \"string\",\n          \"description\": \"The type of the document\"\n        }\n\t}\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        -900
+      ],
+      "id": "68715092-333d-42bb-8460-de8cc2e24261",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.documentType }}",
+                    "rightValue": "MOTIVATIE_BRIEF",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MOTIVATIE_BRIEF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bf067676-4af0-43e8-8c08-bd8a43fad2ab",
+                    "leftValue": "={{ $json.output.documentType }}",
+                    "rightValue": "CV",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CV"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "03e79887-af8f-4375-82ae-2ca1acf0ad7e",
+                    "leftValue": "={{ $json.output.documentType }}",
+                    "rightValue": "UNKNOWN",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "UNKNOWN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1380,
+        -1060
+      ],
+      "id": "d093ff80-7762-4e4d-84bc-fb328491310d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "content": "## Bepaal of de inhoud van de file een cv of een motivatiebrief betreft",
+        "height": 537,
+        "width": 556
+      },
+      "id": "24f35db9-950c-4b1e-bae4-ccff12eb3b63",
+      "name": "Sticky Note25",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        -1160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Genereer een bedank bericht voor het sturen van een cv of motivatiebrief",
+        "height": 400,
+        "width": 333,
+        "color": 4
+      },
+      "id": "e04a68b2-5d65-4719-a597-1835556b266e",
+      "name": "Sticky Note26",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        -1040
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Context:\nFile type = {{ $json.output.documentType }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \n\nBedank de kandidaat voor het versturen van de {{ $json.output.documentType }} en dat je snel contact zal opnemen.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "d2e1efa2-426e-45d7-b071-b93c9875dd98",
+      "name": "Genereer een eind bericht2",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1620,
+        -880
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        -740
+      ],
+      "id": "e1bbd227-3d39-4daf-a567-8d223ea9c815",
+      "name": "OpenAI Chat Model7",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Genereer een bericht om aan te geven dat het bestand niet voldoet.",
+        "height": 400,
+        "width": 333,
+        "color": 3
+      },
+      "id": "ab691356-6e39-40f8-afad-d537d81203d0",
+      "name": "Sticky Note27",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        -1460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Context:\nFile type = {{ $json.output.documentType }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Als recruiter assistent binnen ons team is jouw taak om potentiële kandidaten te begeleiden door het sollicitatieproces. Jouw rol is cruciaal in het stroomlijnen van het communicatieproces en het waarborgen van een soepele ervaring voor de kandidaten. \n\nBedank de kandidaat voor het versturen van je {{ $json.output.documentType }}  maar deze kan niet verwerkt worden omdat het geen motivatiebrief of cv betreft.\n\nNaam van de kandidaat:\n{{ $('Telegram Trigger').item.json.message.from.first_name }} {{ $('Telegram Trigger').item.json.message.from.last_name }}\n\nNaam van de recruiter:\nSome Recruiter\n\nNaam van het bedrijf:\nHR4Professionals\n\nContactgegevens:\nHR4Professionals\nRecruiterstraat 29\n2563BV Haardorp\nNederland"
+            }
+          ]
+        }
+      },
+      "id": "7163b2fc-c6d3-4fbc-9863-6bbf17f1c159",
+      "name": "Genereer een eind bericht3",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1640,
+        -1300
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2160,
+        -880
+      ],
+      "id": "495a22a3-2310-4d62-b426-f03ac463548f",
+      "name": "Telegram Eind Bericht2",
+      "webhookId": "de7fb90a-3c9f-434f-aa72-95c99ce36953",
+      "notesInFlow": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "30kGuK30FJR2KbPG",
+          "name": "Recruiter AI Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        -1140
+      ],
+      "id": "3e49b229-5d65-44cc-be7f-e322405e6048",
+      "name": "OpenAI Chat Model8",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ...Stuur het bericht naar de kandidaat",
+        "height": 395,
+        "width": 486,
+        "color": 4
+      },
+      "id": "d793dfcd-9927-4ffd-8a18-7bdd78768965",
+      "name": "Sticky Note28",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1960,
+        -1040
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mimeType.toLowerCase() }}",
+                    "rightValue": "word",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WORD"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "065e7cc6-4c95-4b83-b8a4-c57cd1efbd5b",
+                    "leftValue": "={{ $json.mimeType.toLowerCase() }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b6eb9814-962a-45de-b70f-e28df586225b",
+                    "leftValue": "={{ $json.mimeType.toLowerCase() }}",
+                    "rightValue": "word",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notContains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "UNKNOWN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        80,
+        -260
+      ],
+      "id": "80017a1f-5d4a-4705-acdd-f3eac0e055dc",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "sendTo": "slagveer@gmail.com",
+        "subject": "=Reply: {{ $('AI Agent1').item.json.output.documentType }} - {{ $('Google Drive').item.json.name }}",
+        "message": "= {{ $('AI Agent1').item.json.output.documentType }} is gestuurd",
+        "options": {}
+      },
+      "id": "99d871e3-a2b5-4a17-83b0-a76e7672b4ce",
+      "name": "Gmail - Create Happy Draft",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        2640,
+        -880
+      ],
+      "typeVersion": 2.1,
+      "webhookId": "7c3e1ee1-4ea9-4130-b94c-73e8722ff326",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Dbr6nlRKcCMgC9bU",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ...Stuur het bericht naar de recruiter",
+        "height": 395,
+        "width": 486,
+        "color": 5
+      },
+      "id": "1c7dd797-d6c1-49d0-b1ec-1ec3720ea9e8",
+      "name": "Sticky Note29",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2480,
+        -1040
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Haal het id uit de onderstaande context. Het id staat tussen haakjes vermeld zoals (1234) of staat na de start commando vermeld bijvoorbeel \"start 1234\" waarbij 1234 het id is in beide gevallen. Als er geen id gevonden kan worden, geef dan null als id terug.\n\nContext:\n{{ $('Telegram Trigger').item.json.callback_query.data }}\n{{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1020,
+        360
+      ],
+      "id": "db8848dc-c00a-42df-a815-5b3bccbf6808",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1040,
+        500
+      ],
+      "id": "fa39390f-f788-48f2-898d-2e5c8fc6aab3",
+      "name": "OpenAI Chat Model9",
+      "credentials": {
+        "openAiApi": {
+          "id": "0oq9f8nbeR1HPEoC",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"job_id\": {\n\t\t\t\"type\": \"string\"\n\t\t}\n\t}\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -860,
+        500
+      ],
+      "id": "9f7ca13f-0590-45fb-bdb4-01ce55dea8b9",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "content": "## Haal het job_id op?\n",
+        "height": 394.42512272977456,
+        "width": 304.10628068244364
+      },
+      "id": "96bee226-adef-428b-8829-31818b3eb3eb",
+      "name": "Sticky Note30",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1060,
+        200
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate message reply",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate error message": {
+      "main": [
+        [
+          {
+            "node": "Is het een text input bericht?3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate message reply": {
+      "main": [
+        [
+          {
+            "node": "Is het een text input bericht?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model Error": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate error message",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Is a file uploaded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Genereer een eind bericht",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Question Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Question Agent1": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Een bericht via buttons of via textinput?": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Question Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request Question Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is er een volgende vraag?": {
+      "main": [
+        [
+          {
+            "node": "Generate message reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Zijn er opties?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Is er een volgende vraag?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Genereer een eind bericht": {
+      "main": [
+        [
+          {
+            "node": "Is het een text input bericht?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is het een text input bericht?": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is het een text input bericht?1": {
+      "main": [
+        [
+          {
+            "node": "Telegram Eind Bericht",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Eind Bericht1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zijn er opties?": {
+      "main": [
+        [
+          {
+            "node": "Genereer een eind bericht",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kandidaat wilt stoppen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate error message1": {
+      "main": [
+        [
+          {
+            "node": "Is het een text input bericht?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model Error1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate error message1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kandidaat wilt stoppen": {
+      "main": [
+        [
+          {
+            "node": "Generate error message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate error message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is het een text input bericht?2": {
+      "main": [
+        [
+          {
+            "node": "Telegram4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is het een text input bericht?3": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is a file uploaded": {
+      "main": [
+        [
+          {
+            "node": "Upload File to GDrive",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File to GDrive": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Binary Input Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Binary Input Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Binary Input Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Summarization Chain1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Binary Input Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarization Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarization Chain1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Genereer een eind bericht1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarization Chain": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Genereer een eind bericht2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Genereer een eind bericht2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Genereer een eind bericht3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Genereer een eind bericht2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Genereer een eind bericht3": {
+      "main": [
+        [
+          {
+            "node": "Telegram Eind Bericht2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Genereer een eind bericht2": {
+      "main": [
+        [
+          {
+            "node": "Telegram Eind Bericht2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Genereer een eind bericht1": {
+      "main": [
+        [
+          {
+            "node": "Telegram Eind Bericht2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model8": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Genereer een eind bericht3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Summarization Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Genereer een eind bericht1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Eind Bericht2": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Create Happy Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Create Happy Draft": {
+      "main": [
+        []
+      ]
+    },
+    "Telegram2": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model9": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Een bericht via buttons of via textinput?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "ee2b846c-2dc6-4ea2-9c37-6c4548028238",
+  "meta": {
+    "templateId": "2271",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "57d2f18e1f410a2e5e28fdaeeb5f59875a002a289f1e505ffd3e8be762215818"
+  },
+  "id": "gRSxeLEcwwz6t5S1",
+  "tags": [
+    {
+      "createdAt": "2025-03-08T07:05:49.728Z",
+      "updatedAt": "2025-03-08T07:05:49.728Z",
+      "id": "Ppwa5pg1iMZ61wOR",
+      "name": "Recruiter"
+    },
+    {
+      "createdAt": "2025-03-08T07:06:36.454Z",
+      "updatedAt": "2025-03-08T07:06:36.454Z",
+      "id": "b1AYNGnt3kcpf85a",
+      "name": "HR4Professionals"
+    }
+  ]
+}
