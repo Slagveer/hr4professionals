@@ -1,0 +1,279 @@
+{
+  "Tool": [
+    {
+      "id": "081aefb4-a8f7-4ae2-911c-0f0eae337ccc",
+      "name": "job_creator",
+      "description": "Insert a job by sending the job to Loxo by API based on the parameters in the input schema.",
+      "color": "linear-gradient(rgb(145,98,138), rgb(246,68,46))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"agency_slug\",\"description\":\"The slug of the agency\",\"type\":\"string\",\"required\":true},{\"id\":1,\"property\":\"active\",\"description\":\"The active state of the job\",\"type\":\"string\",\"required\":false},{\"id\":2,\"property\":\"address\",\"description\":\"The address of the job\",\"type\":\"string\",\"required\":false},{\"id\":3,\"property\":\"city\",\"description\":\"The city of the job\",\"type\":\"string\",\"required\":false},{\"id\":4,\"property\":\"company_hidden\",\"description\":\"Should the company be hidden\",\"type\":\"boolean\",\"required\":false},{\"id\":5,\"property\":\"company_id\",\"description\":\"The id of the company where the job is based at\",\"type\":\"number\",\"required\":false},{\"id\":6,\"property\":\"country_id\",\"description\":\"The id of the country where the job is based at\",\"type\":\"string\",\"required\":false},{\"id\":7,\"property\":\"description\",\"description\":\"The description of the job\",\"type\":\"string\",\"required\":false},{\"id\":8,\"property\":\"internal_notes\",\"description\":\"A short description of the job\",\"type\":\"string\",\"required\":false},{\"id\":9,\"property\":\"job_category_ids\",\"description\":\"The job categories\",\"type\":\"string\",\"required\":false},{\"id\":10,\"property\":\"job_status_id\",\"description\":\"The status id of the job\",\"type\":\"number\",\"required\":false},{\"id\":11,\"property\":\"job_type_id\",\"description\":\"The job type id\",\"type\":\"number\",\"required\":false},{\"id\":12,\"property\":\"owner_emails\",\"description\":\"The owner email addresses\",\"type\":\"string\",\"required\":false},{\"id\":13,\"property\":\"published\",\"description\":\"Is the job published\",\"type\":\"boolean\",\"required\":false},{\"id\":14,\"property\":\"published_at\",\"description\":\"The publishing dat of the job\",\"type\":\"string\",\"required\":false},{\"id\":15,\"property\":\"raw_company_name\",\"description\":\"The raw company name\",\"type\":\"string\",\"required\":false},{\"id\":16,\"property\":\"salary\",\"description\":\"The salary of the job\",\"type\":\"string\",\"required\":false},{\"id\":17,\"property\":\"state_id\",\"description\":\"The state id of the job\",\"type\":\"string\",\"required\":false},{\"id\":18,\"property\":\"title\",\"description\":\"The title of the job\",\"type\":\"string\",\"required\":false},{\"id\":19,\"property\":\"zip\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":20,\"property\":\"published_end_date\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":21,\"property\":\"remote_work_allowed\",\"description\":\"\",\"type\":\"boolean\",\"required\":false},{\"id\":22,\"property\":\"dynamic_field_key\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":23,\"property\":\"description\",\"description\":\"\",\"type\":\"string\",\"required\":false}]",
+      "func": "const fetch = require('node-fetch');\nconst FormData = require('form-data');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/jobs`;\nconst re = /\\\\n/gi; \nconst updatedDescription = $description.replace(re, '');\nconst form = new FormData();\n\ntry {\n  form.append('job[title]', $title);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[address]', $address);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[company_id]', `${$company_id}`);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[country_id]', $country_id);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[job_type_id]', `${$job_type_id}`);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[job_status_id]', `${$job_status_id}`);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[salary]', $salary);\n} catch(error){\n  console.log(error)\n}\ntry {\n  form.append('job[description]', updatedDescription);\n} catch(error){\n  console.log(error)\n}\nconst options = {\n    method: 'POST',\n    headers: {\n      accept: 'application/json',\n      authorization: `Bearer ${$vars.loxo_token}`\n    },\n   body: form\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    return form; \n    console.error(error);\n    return 'Error';\n}"
+    },
+    {
+      "id": "bfc24b39-c6c1-47d3-be25-f5610dc342f9",
+      "name": "job_list",
+      "description": "List all the current jobs",
+      "color": "linear-gradient(rgb(171,71,185), rgb(68,52,212))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"agency_slug\",\"description\":\"\",\"type\":\"string\",\"required\":true},{\"id\":1,\"property\":\"per_page\",\"description\":\"\",\"type\":\"number\",\"required\":false},{\"id\":2,\"property\":\"page\",\"description\":\"\",\"type\":\"number\",\"required\":false},{\"id\":3,\"property\":\"query\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":4,\"property\":\"include_related_agencies\",\"description\":\"\",\"type\":\"boolean\",\"required\":false},{\"id\":5,\"property\":\"published_at_sort\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":6,\"property\":\"rank_sort\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":7,\"property\":\"updated_at_sort\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":8,\"property\":\"location_sort\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":9,\"property\":\"job_title_sort\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":10,\"property\":\"published\",\"description\":\"\",\"type\":\"boolean\",\"required\":false},{\"id\":11,\"property\":\"job_status_id\",\"description\":\"\",\"type\":\"number\",\"required\":false},{\"id\":12,\"property\":\"job_status_ids\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":13,\"property\":\"job_type_id\",\"description\":\"\",\"type\":\"number\",\"required\":false},{\"id\":14,\"property\":\"country_id\",\"description\":\"\",\"type\":\"number\",\"required\":false},{\"id\":15,\"property\":\"state_id\",\"description\":\"\",\"type\":\"number\",\"required\":false},{\"id\":16,\"property\":\"city\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":17,\"property\":\"job_category_ids\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":18,\"property\":\"owned_by_ids\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":19,\"property\":\"status\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":20,\"property\":\"job_type\",\"description\":\"\",\"type\":\"string\",\"required\":false},{\"id\":21,\"property\":\"remote_work_allowed\",\"description\":\"\",\"type\":\"boolean\",\"required\":false},{\"id\":22,\"property\":\"serialization_set\",\"description\":\"\",\"type\":\"string\",\"required\":false}]",
+      "func": "/*\n* You can use any libraries imported in Flowise\n* You can use properties specified in Output Schema as variables. Ex: Property = userid, Variable = $userid\n* Must return a string value at the end of function\n*/\n\nconst fetch = require('node-fetch');\nconst url = `https://app.loxo.co/api/${$agency_slug}/jobs`;\nconst options = {\n    method: 'GET',\n    headers: {\n        accept: 'application/json',\n       authorization: `Bearer ${$vars.loxo_hr4professionals_token}`\n    }\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}"
+    },
+    {
+      "id": "e1d5a44e-f6e3-41fa-93ec-03be8a0276c0",
+      "name": "get_stock_movers",
+      "description": "Get the stocks that has biggest price/volume moves, e.g. actives, gainers, losers, etc.",
+      "color": "linear-gradient(rgb(93,74,205), rgb(28,78,67))",
+      "iconSrc": "",
+      "schema": "[]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'https://morning-star.p.rapidapi.com/market/v2/get-movers';\nconst options = {\n\tmethod: 'GET',\n\theaders: {\n\t\t'X-RapidAPI-Key': '76b5dbd617mshe9cb501df67f18cp12c424jsn1641733554e6',\n\t\t'X-RapidAPI-Host': 'morning-star.p.rapidapi.com'\n\t}\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst result = await response.text();\n\tconsole.log(result);\n\treturn result;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "76e585c4-b106-4b08-8832-0c557f87fc40",
+      "name": "get_random_pokeman",
+      "description": "Use this tool when asked to retrieve a random Pokemon.",
+      "color": "linear-gradient(rgb(103,87,73), rgb(45,105,224))",
+      "iconSrc": "",
+      "schema": "[]",
+      "func": "return 'Eeevees'; "
+    },
+    {
+      "id": "99390ab9-df57-45ff-925b-b667c9edfdd3",
+      "name": "job_list_types",
+      "description": "Use this tool to list all the job types",
+      "color": "linear-gradient(rgb(16,176,108), rgb(219,133,221))",
+      "iconSrc": "",
+      "schema": "[]",
+      "func": "/*\n* You can use any libraries imported in Flowise\n* You can use properties specified in Output Schema as variables. Ex: Property = userid, Variable = $userid\n* Must return a string value at the end of function\n*/\n\nconst fetch = require('node-fetch');\n//const url = `https://app.loxo.co/api/${$agency_slug}/job-types`;\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/job_types`;\nconst options = {\n    method: 'GET',\n    headers: {\n        accept: 'application/json',\n       //authorization: `Bearer ${$token}`,\n       authorization: `Bearer ${$vars.loxo_token}`\n    }\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}"
+    },
+    {
+      "id": "262a15ae-73e9-4f7a-ba35-415441a4e5fe",
+      "name": "file_mover",
+      "description": "Move File from one old directory with the old file name to a new directory with a new file name. ",
+      "color": "linear-gradient(rgb(137,32,243), rgb(78,172,207))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"oldFileName\",\"description\":\"Old File Name\",\"type\":\"string\",\"required\":true},{\"id\":1,\"property\":\"newFileName\",\"description\":\"New File Name\",\"type\":\"string\",\"required\":true},{\"id\":2,\"property\":\"newFileDirectory\",\"description\":\"New File Directory\",\"type\":\"string\",\"required\":false},{\"id\":3,\"property\":\"oldFileDirectory\",\"description\":\"Old File Directory\",\"type\":\"string\",\"required\":false}]",
+      "func": "const fetch = require('node-fetch');\nconst url = `https://a95b-84-24-210-240.ngrok-free.app/api/file/move`;\nconst options = {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json'\n    },\n    body: JSON.stringify({\n        \"oldFileName\": $oldFileName,\n        \"newFileName\": $newFileName,\n        \"oldFileDirectory\": $oldFileDirectory,\n        \"newFileDirectory\": $newFileDirectory,\n    })\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return 'Helaas niet gelukt';\n}"
+    },
+    {
+      "id": "b6a9a8f8-744f-4c5a-a177-161d4f0f356e",
+      "name": "get_countries",
+      "description": "Use this tool to get a list of countries.",
+      "color": "linear-gradient(rgb(245,147,128), rgb(6,132,129))",
+      "iconSrc": "",
+      "schema": "[{\"id\":1,\"property\":\"country\",\"description\":\"The name of a country\",\"type\":\"string\",\"required\":false}]",
+      "func": "/*\n* This tool will request for all the countries\n* The format will be like this:\n* [{\n*      \"id\": 3,\n*      \"name\": \"Afghanistan\",\n*       \"code\": \"AF\",\n*       \"long_code\": \"AFG\"\n*   }]\n*/\nconst fetch = require('node-fetch');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/countries?query=${$country}`;\nconst options = {\n\tmethod: 'GET',\n\theaders: {\n        'accept': 'application/json',\n       'authorization': `Bearer ${$vars.loxo_token}`\n\t}\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst result = await response.text();\n\treturn result;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "e8fedbaf-0ae9-4962-b057-8b5fa69b7c0b",
+      "name": "get_stock_news",
+      "description": "Get latest news for a stock",
+      "color": "linear-gradient(rgb(217,253,99), rgb(240,97,201))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"performanceId\",\"description\":\"id of the stock, which is referred as performanceID in the API\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'https://morning-star.p.rapidapi.com/news/list?performanceId=' + $performanceId;\nconst options = {\n\tmethod: 'GET',\n\theaders: {\n\t\t'X-RapidAPI-Key': '76b5dbd617mshe9cb501df67f18cp12c424jsn1641733554e6',\n\t\t'X-RapidAPI-Host': 'morning-star.p.rapidapi.com'\n\t}\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst result = await response.text();\n\tconsole.log(result);\n\treturn result;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "4471cb0f-ce30-4508-b999-c8da9eb85f7a",
+      "name": "add_airtable",
+      "description": "Add the stock, news summary & price move to Airtable",
+      "color": "linear-gradient(rgb(40,172,38), rgb(143,223,71))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"stock\",\"description\":\"stock ticker\",\"type\":\"string\",\"required\":true},{\"id\":1,\"property\":\"move\",\"description\":\"price move in %\",\"type\":\"string\",\"required\":true},{\"id\":2,\"property\":\"news_summary\",\"description\":\"news summary of the stock\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst baseId = 'appmvVPGaWAWXWyNm';\nconst tableId = 'tblHILNeFENuFnwzf';\nconst token = 'patrWQzTKPhRbD6N8.3f87a7fdd1754c0b75a50417612db33870a1caab9aecf5d0a1cc8f50a0d9f3e8';\n\nconst body = {\n\t\"records\": [\n\t\t{\n\t\t\t\"fields\": {\n\t\t\t\t\"stock\": $stock,\n\t\t\t\t\"move\": $move,\n\t\t\t\t\"news_summary\": $news_summary,\n\t\t\t}\n\t\t}\n\t]\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Authorization': `Bearer ${token}`,\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\nconst url = `https://api.airtable.com/v0/${baseId}/${tableId}`\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst text = await response.text();\n\treturn text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "c6ff4471-c8a5-469b-a4cf-e5a557a47003",
+      "name": "get_job_statuses",
+      "description": "Use this tool to get a list of job statuses.",
+      "color": "linear-gradient(rgb(56,58,222), rgb(213,87,155))",
+      "iconSrc": "",
+      "schema": "[]",
+      "func": "/*\n* This tool will request for all the job statuses\n* The format will be like this:\n* [{\n*       \"id\": 21185,\n*       \"name\": \"Actief\",\n*       \"position\": 0,\n*       \"default\": true\n*   }]\n*/\nconst fetch = require('node-fetch');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/job_statuses`;\nconst options = {\n\tmethod: 'GET',\n\theaders: {\n        'accept': 'application/json',\n       'authorization': `Bearer ${$vars.loxo_token}`\n\t}\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst result = await response.text();\n\treturn result;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "bc689b0e-dcfa-41b4-972c-208934b42165",
+      "name": "get_job_types",
+      "description": "Use this tool to get a list of job types.",
+      "color": "linear-gradient(rgb(181,145,254), rgb(64,53,53))",
+      "iconSrc": "",
+      "schema": "[]",
+      "func": "/*\n* This tool will request for all the job types\n* The format will be like this:\n* [{\n*      \"id\": 3,\n*      \"name\": \"Afghanistan\",\n*   }]\n*/\n\nconst fetch = require('node-fetch');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/job_types`;\nconst options = {\n    method: 'GET',\n    headers: {\n        accept: 'application/json',\n       authorization: `Bearer ${$vars.loxo_token}`\n    }\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}"
+    },
+    {
+      "id": "fc856205-4750-44f7-a055-f89e5fabf0a6",
+      "name": "get_companies",
+      "description": "Use this tool to get a list of companies.",
+      "color": "linear-gradient(rgb(25,212,119), rgb(240,5,182))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"query\",\"description\":\"The query parameter\",\"type\":\"string\",\"required\":true}]",
+      "func": "/*\n* This tool will request for all the companies based on the given query\n* The format will be like this:\n* [        {\n*            \"id\": 168854155,\n*            \"name\": \"Veiligheidsnetwerk Oost-Nederland\",\n*            \"url\": null,\n*            \"company_types\": [\n*                {\n*                    \"id\": 19394,\n*                    \"name\": \"Klant\"\n*                }\n*            ],\n*            .......\n*         }\n* ]\n*/\nconst fetch = require('node-fetch');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/companies?query=${$query}`;\nconst options = {\n\tmethod: 'GET',\n\theaders: {\n        'accept': 'application/json',\n       'authorization': `Bearer ${$vars.loxo_token}`\n\t}\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst result = await response.text();\n\treturn result;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "b454a104-d99d-4572-8479-a06ff931a31b",
+      "name": "get_company_types",
+      "description": "Use this tool to get a list of company types.",
+      "color": "linear-gradient(rgb(200,195,129), rgb(167,207,89))",
+      "iconSrc": "",
+      "schema": "[]",
+      "func": "/*\n* This tool will request for all the company types\n* The format will be like this:\n* [{\n*      \"id\": 3,\n*      \"name\": \"Klant\",\n*   }]\n*/\nconst fetch = require('node-fetch');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/company_types`;\nconst options = {\n\tmethod: 'GET',\n\theaders: {\n        'accept': 'application/json',\n       'authorization': `Bearer ${$vars.loxo_token}`\n\t}\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst result = await response.text();\n\treturn result;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "678a3a30-5da6-4120-bd2d-909379a8f675",
+      "name": "calculate",
+      "description": "Calculate the result of 2 + 2",
+      "color": "linear-gradient(rgb(96,226,140), rgb(40,248,66))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"id\",\"description\":\"Id of the file\",\"type\":\"string\",\"required\":true}]",
+      "func": "import { google } from 'googleapis';\nimport * as fs from 'fs';\nimport { OAuth2Client } from 'google-auth-library';\n\n// Load your credentials file\nconst CREDENTIALS_PATH = 'http://localhost:3000/assets/google_authentication.json';\n\nasync function authenticate() {\n  const auth = new google.auth.GoogleAuth({\n    keyFile: CREDENTIALS_PATH,\n    scopes: ['https://www.googleapis.com/auth/drive.readonly'],\n  });\n  return await auth.getClient();\n}\n\nasync function downloadFile(fileId: string) {\n  try {\n    const authClient = await authenticate();\n    const drive = google.drive({ version: 'v3', auth: authClient });\n\n    // Create a stream to save the file\n    const dest = fs.createWriteStream('/path/to/destination/file');\n\n    // Download the file from Google Drive\n    const res = await drive.files.get(\n      {\n        fileId: fileId,\n        alt: 'media',\n      },\n      { responseType: 'stream' }\n    );\n\n    // Pipe the file data to the local file\n    res.data\n      .on('end', () => {\n        console.log('File downloaded successfully.');\n      })\n      .on('error', (err: Error) => {\n        console.error('Error downloading file:', err);\n      })\n      .pipe(dest);\n  } catch (err) {\n    console.error('Error during API request:', err);\n  }\n}\n\n// Call the function with the file ID from Google Drive\nconst fileId = 'your-file-id-here';\ndownloadFile(fileId);"
+    },
+    {
+      "id": "c0ff1d61-b746-4637-a189-dc92921fbb93",
+      "name": "todays_date_time",
+      "description": "Useful to get todays day, date and time.",
+      "color": "linear-gradient(rgb(145,251,12), rgb(84,7,90))",
+      "iconSrc": "https://raw.githubusercontent.com/gilbarbara/logos/main/logos/javascript.svg",
+      "schema": "[]",
+      "func": "const timeZone = 'Australia/Sydney';\nconst options = {\n    timeZone: timeZone,\n    year: 'numeric',\n    month: 'long',\n    day: 'numeric',\n    weekday: 'long',\n    hour: '2-digit',\n    minute: '2-digit',\n    second: '2-digit',\n    hour12: true\n};\nconst today = new Date();\nconst formattedDate = today.toLocaleString('en-GB', options);\nconst result = {\n    \"formattedDate\": formattedDate,\n    \"timezone\": timeZone\n};\nreturn JSON.stringify(result);\n"
+    },
+    {
+      "id": "ca5aa5a7-8da9-450c-b319-7e008e724500",
+      "name": "xlsx_file_reader",
+      "description": "Read a XLSX file in the cloud Google Drive",
+      "color": "linear-gradient(rgb(205,38,182), rgb(96,66,245))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"fileId\",\"description\":\"The id of the file on google drive\",\"type\":\"string\",\"required\":false}]",
+      "func": "/*\n* You can use any libraries imported in Flowise\n* You can use properties specified in Input Schema as variables. Ex: Property = userid, Variable = $userid\n* Must return a string value at the end of function\n*/\n\nconst fetch = require('node-fetch');\nconst webhookUrl = 'https://hook.eu2.make.com/s9u7byjkep73hrve2qpr9b7pj4nn7fk6';\nconst body = {\n\t\"fileId\": $fileId\n};\nconst options = {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json'\n    },\n    body: JSON.stringify(body)\n};\ntry {\n    const response = await fetch(webhookUrl, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}"
+    },
+    {
+      "id": "39be0437-947a-4c5f-a4eb-49de5c43cc1f",
+      "name": "pdf_file_reader",
+      "description": "Read a PDF file in the cloud Google Drive",
+      "color": "linear-gradient(rgb(240,8,243), rgb(9,98,217))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"fileId\",\"description\":\"The id of the file on google drive\",\"type\":\"string\",\"required\":false}]",
+      "func": "/*\n* You can use any libraries imported in Flowise\n* You can use properties specified in Input Schema as variables. Ex: Property = userid, Variable = $userid\n* Must return a string value at the end of function\n*/\n\nconst fetch = require('node-fetch');\nconst webhookUrl = 'https://hook.eu2.make.com/ss97d1r7kj844unhpywqzj7mes7lvxm3';\nconst body = {\n\t\"fileId\": $fileId\n};\nconst options = {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json'\n    },\n    body: JSON.stringify(body)\n};\ntry {\n    const response = await fetch(webhookUrl, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}"
+    },
+    {
+      "id": "c65a79d1-6db6-4636-87f3-9d8f134fafc7",
+      "name": "maker_file_type_reader",
+      "description": "Read a file type in the cloud Google Drive",
+      "color": "linear-gradient(rgb(121,100,11), rgb(152,238,88))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"fileId\",\"description\":\"The id of the file on google drive\",\"type\":\"string\",\"required\":false}]",
+      "func": "/*\n* You can use any libraries imported in Flowise\n* You can use properties specified in Input Schema as variables. Ex: Property = userid, Variable = $userid\n* Must return a string value at the end of function\n*/\n\nconst fetch = require('node-fetch');\nconst webhookUrl = 'https://hook.eu2.make.com/0yuvr2xw7jbkmejob3tji3njke6po6os';\nconst body = {\n\t\"fileId\": $fileId\n};\nconst options = {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json'\n    },\n    body: JSON.stringify(body)\n};\ntry {\n    const response = await fetch(webhookUrl, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}"
+    },
+    {
+      "id": "4bda45cd-5cbf-4bd4-a81c-94017f2002ed",
+      "name": "context_validator",
+      "description": "This tool will validate the context and return a JSON result.",
+      "color": "linear-gradient(rgb(201,76,213), rgb(74,104,88))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"input\",\"description\":\"The context to be used in the API call\",\"type\":\"string\",\"required\":false}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'http://localhost:3000/api/v1/prediction/9c890823-506f-498b-b4b9-c8faddf84f08';\nconst body = {\n\t\"question\": `Give only a json result of the following validated context. ${$input}`\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "a3f261d8-87c9-47fc-99a9-468fbf6e83c8",
+      "name": "file_reader_agent",
+      "description": "Read a file based on the given id. (Agentsflows - File Reader Agent)",
+      "color": "linear-gradient(rgb(118,175,175), rgb(88,208,108))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"id\",\"description\":\"An id\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'http://localhost:3000/api/v1/prediction/1c79d216-81c1-465a-b697-ff21ec335b02'; // replace with specific chatflow id\n\nconst body = {\n\t\"question\": $id\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "12164b99-522b-4297-997e-0175a4f619d0",
+      "name": "description_validator_agent",
+      "description": "Validate the description. (Agentsflow - Description Validator Minimum Agent)",
+      "color": "linear-gradient(rgb(184,140,137), rgb(129,83,255))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"description\",\"description\":\"The description\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'http://localhost:3000/api/v1/prediction/e90d794a-1db5-4689-b28b-343bc0e6eee1'; // replace with specific chatflow id\n\nconst body = {\n\t\"question\": $description\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "52bddb4d-740f-4897-bc38-949d45a344e2",
+      "name": "json_creator_agent",
+      "description": "Create Json based on the description. (Agentsflow - JSON Job Generator Agent)",
+      "color": "linear-gradient(rgb(206,69,176), rgb(82,79,245))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"description\",\"description\":\"The description\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\n// const url = 'http://localhost:3000/agentcanvas/277ae305-2d81-4c47-a383-210966dd770d'; // replace with specific chatflow id\nconst url = 'http://localhost:3000/api/v1/prediction/048510fe-e031-4de9-808c-d25c3786c574'; // replace with specific chatflow id\n\nconst body = {\n\t\"question\": $description\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "8c0dc3a2-2e19-4dff-8481-e64d35556ad8",
+      "name": "id_lookup_agent",
+      "description": "Lookup all the id's in a JSON description.",
+      "color": "linear-gradient(rgb(110,75,194), rgb(18,160,197))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"jsonDescription\",\"description\":\"The description\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'http://localhost:3000/api/v1/prediction/54be58ee-37e7-41fe-b882-9772e0ef1fb5'; // replace with specific chatflow id\n\nconst body = {\n\t\"question\": `Generate JSON based on: ${$jsonDescription}`\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "b8cfe391-7227-4639-9294-e6572373b7bb",
+      "name": "add_new_company_into_loxo",
+      "description": "Add a company into Loxo",
+      "color": "linear-gradient(rgb(24,171,239), rgb(231,188,223))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"companyName\",\"description\":\"The name of the company\",\"type\":\"string\",\"required\":true},{\"id\":1,\"property\":\"agency_slug\",\"description\":\"The slug of the agency\",\"type\":\"string\",\"required\":false}]",
+      "func": "const fetch = require('node-fetch');\nconst FormData = require('form-data');\nconst url = `https://app.loxo.co/api/${$vars.agency_slug}/companies`;\nconst re = /\\\\n/gi; \nconst form = new FormData();\n\ntry {\n  form.append('company[name]', $companyName);\n} catch(error){\n  console.log(error)\n}\nconst options = {\n    method: 'POST',\n    headers: {\n      accept: 'application/json',\n      authorization: `Bearer ${$vars.loxo_token}`\n    },\n   body: form\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return 'Error';\n}"
+    },
+    {
+      "id": "9eddb483-a9cf-464a-b1bf-76145e6a5683",
+      "name": "id_lookup_squential_agent",
+      "description": "Lookup all the id's in a JSON description. (Agentsflow - Id Lookup Squential Agent)",
+      "color": "linear-gradient(rgb(244,122,23), rgb(198,53,72))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"jsonDescription\",\"description\":\"The description\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'http://localhost:3000/api/v1/prediction/1925f562-32eb-40f5-9bb4-e0fac01f0c2e'; // replace with specific chatflow id\n\nconst body = {\n\t\"question\": `Generate JSON based on: ${$jsonDescription}`\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "fd097b3f-dde1-4b07-b311-dd82c16f46e7",
+      "name": "whatsapp_messenger",
+      "description": "Send whatsapp message",
+      "color": "linear-gradient(rgb(208,231,177), rgb(208,86,217))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"message\",\"description\":\"A whatsapp message\",\"type\":\"string\",\"required\":true},{\"id\":1,\"property\":\"telephone\",\"description\":\"The receiver telephone number\",\"type\":\"string\",\"required\":false}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'https://hook.eu2.make.com/ghabsaxknlkap4hxbllbnbxprf4fiihk';\n\nconst body = {\n\t\"message\": `${$message}`,\n    \"telephone\": `${$telephone}`\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "b1c4c960-d0fe-4531-b44a-7d05fc0dbea1",
+      "name": "telegram_messager",
+      "description": "Send telegram message",
+      "color": "linear-gradient(rgb(179,9,255), rgb(106,79,164))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"message\",\"description\":\"A whatsapp message\",\"type\":\"string\",\"required\":true}]",
+      "func": "const fetch = require('node-fetch');\nconst url = 'https://hook.eu2.make.com/w16c1n1ik5fjsgafs724wkyppailuyyo';\n\nconst body = {\n\t\"message\": `${$message}`\n};\n\nconst options = {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(body)\n};\n\ntry {\n\tconst response = await fetch(url, options);\n\tconst resp = await response.json();\n\treturn resp.text;\n} catch (error) {\n\tconsole.error(error);\n\treturn '';\n}"
+    },
+    {
+      "id": "b9ec2890-9916-47d1-90a0-6cc46acfd7b6",
+      "name": "question_redirect",
+      "description": "Use this tool to return the HITL answer on a question",
+      "color": "linear-gradient(rgb(243,43,106), rgb(172,47,219))",
+      "iconSrc": "",
+      "schema": "[{\"id\":0,\"property\":\"question\",\"description\":\"The question\",\"type\":\"string\",\"required\":true}]",
+      "func": "return $flow.input;"
+    }
+  ],
+  "ChatFlow": [],
+  "AgentFlow": [],
+  "Variable": [
+    {
+      "id": "965bac7f-a2bc-45f0-a46a-3a07611d095c",
+      "name": "loxo_token",
+      "value": "5ac31a5e4eb2ae3c720227c2ac08cf1045c3c5ba5b2489dad01c777875e8a787fbb3b6f0a746a7bbeb26462435c9df114c2d655c016ec69931990d729c451edd532649ddcb50e7a5a6fbbcf451b4bcba8ac9e5dd684cb1a45ddc4f16f40d49f15cf3b0b813118555b7a23f45fe8a97f2448e4eb6b61050942e3a722e63cb98ea",
+      "type": "static"
+    },
+    {
+      "id": "69a236dd-15e4-4017-bcaa-b6b4b57078fa",
+      "name": "agency_slug",
+      "value": "hr4professionals",
+      "type": "static"
+    },
+    {
+      "id": "7f2a3061-db34-4673-9de7-030ab6051680",
+      "name": "loxo_hr4professionals_token",
+      "value": "5ac31a5e4eb2ae3c720227c2ac08cf1045c3c5ba5b2489dad01c777875e8a787fbb3b6f0a746a7bbeb26462435c9df114c2d655c016ec69931990d729c451edd532649ddcb50e7a5a6fbbcf451b4bcba8ac9e5dd684cb1a45ddc4f16f40d49f15cf3b0b813118555b7a23f45fe8a97f2448e4eb6b61050942e3a722e63cb98ea",
+      "type": "static"
+    }
+  ],
+  "Assistant": []
+}
